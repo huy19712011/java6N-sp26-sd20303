@@ -1,5 +1,6 @@
 package org.example.java6nsp26sd20303.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.java6nsp26sd20303.entity.Todo;
 import org.example.java6nsp26sd20303.service.TodoService;
@@ -43,7 +44,7 @@ public class TodoController {
     }
 
     @PostMapping
-    public ResponseEntity<Todo> addTodo(@RequestBody Todo todo) {
+    public ResponseEntity<Todo> addTodo(@Valid @RequestBody Todo todo) {
 
         Todo savedTodo = todoService.add(todo);
 
@@ -51,7 +52,7 @@ public class TodoController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Todo> updateTodo(@RequestBody Todo todo, @PathVariable long id) {
+    public ResponseEntity<Todo> updateTodo(@Valid @RequestBody Todo todo, @PathVariable long id) {
 
         Todo updatedTodo = todoService.update(todo, id);
 
