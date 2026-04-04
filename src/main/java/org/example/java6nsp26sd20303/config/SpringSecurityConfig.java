@@ -1,20 +1,27 @@
 package org.example.java6nsp26sd20303.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.example.java6nsp26sd20303.exception.CustomErrorDetails;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.time.LocalDateTime;
+
 @Configuration
 @RequiredArgsConstructor
+//@EnableMethodSecurity(prePostEnabled = true, jsr250Enabled = true)
 public class SpringSecurityConfig {
 
     private final UserDetailsService userDetailsService;
@@ -41,7 +48,20 @@ public class SpringSecurityConfig {
 
                     authorize.anyRequest().authenticated();
                 })
-
+                .exceptionHandling(exceptionHandling -> {
+                    exceptionHandling.accessDeniedHandler((request, response, accessDeniedException) -> {
+                        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                        response.setStatus(403);
+                        
+                        CustomErrorDetails errorDetails = new CustomErrorDetails(
+                                LocalDateTime.now(),
+                                "Access Denied: You do not have permission to access this resource",
+                                "uri=" + request.getRequestURI()
+                        );
+                        
+                        response.getWriter().write(new ObjectMapper().writeValueAsString(errorDetails));
+                    });
+                })
                 .httpBasic(Customizer.withDefaults());
 
         return http.build();

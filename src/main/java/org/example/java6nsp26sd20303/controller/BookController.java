@@ -1,11 +1,13 @@
 package org.example.java6nsp26sd20303.controller;
 
+import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
 import org.example.java6nsp26sd20303.dto.BookRequest;
 import org.example.java6nsp26sd20303.dto.BookResponse;
 import org.example.java6nsp26sd20303.service.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,6 +32,8 @@ public class BookController {
     }
 
     @PostMapping
+    //@PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
+    //@RolesAllowed("ADMIN")
     public ResponseEntity<BookResponse> add(@RequestBody BookRequest bookRequest) {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(bookService.add(bookRequest));
