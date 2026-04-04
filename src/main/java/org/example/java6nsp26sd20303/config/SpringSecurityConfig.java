@@ -48,20 +48,6 @@ public class SpringSecurityConfig {
 
                     authorize.anyRequest().authenticated();
                 })
-                .exceptionHandling(exceptionHandling -> {
-                    exceptionHandling.accessDeniedHandler((request, response, accessDeniedException) -> {
-                        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                        response.setStatus(403);
-                        
-                        CustomErrorDetails errorDetails = new CustomErrorDetails(
-                                LocalDateTime.now(),
-                                "Access Denied: You do not have permission to access this resource",
-                                "uri=" + request.getRequestURI()
-                        );
-                        
-                        response.getWriter().write(new ObjectMapper().writeValueAsString(errorDetails));
-                    });
-                })
                 .httpBasic(Customizer.withDefaults());
 
         return http.build();
