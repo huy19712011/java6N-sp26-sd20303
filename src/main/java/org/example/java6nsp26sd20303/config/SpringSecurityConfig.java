@@ -19,7 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import java.time.LocalDateTime;
 
-@Configuration
+//@Configuration
 @RequiredArgsConstructor
 //@EnableMethodSecurity(prePostEnabled = true, jsr250Enabled = true)
 public class SpringSecurityConfig {
