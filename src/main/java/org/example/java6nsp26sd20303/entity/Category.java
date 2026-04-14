@@ -1,5 +1,8 @@
 package org.example.java6nsp26sd20303.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -15,6 +18,8 @@ public class Category {
 
     private String name;
 
+    //@JsonIgnore
+    @JsonBackReference
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Product> products = new ArrayList<>();
 
